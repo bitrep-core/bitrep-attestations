@@ -22,10 +22,14 @@ def get_user_reputation(username: str, db: Session = Depends(get_db)):
         .filter(AttestationModel.to_user == username)
         .all()
     )
+
     reputation = sum(r.value for r in rows)
+
+    attestation_list = [AttestationOut.from_orm(r) for r in rows]
+
     return UserReputation(
         user=username,
         reputation=reputation,
-        attestations=rows,
+        attestations=attestation_list,
     )
 
