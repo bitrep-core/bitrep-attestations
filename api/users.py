@@ -32,4 +32,3 @@ def get_user_reputation(username: str, db: Session = Depends(get_db)):
         reputation=reputation,
         attestations=attestation_list,
     )
-
