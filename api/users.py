@@ -1,5 +1,3 @@
-# endpoints for users
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from db.connection import SessionLocal
@@ -17,15 +15,32 @@ def get_db():
 
 @router.get("/user/{username}", response_model=UserReputation)
 def get_user_reputation(username: str, db: Session = Depends(get_db)):
+    print(">>> ENTERING /user endpoint")
+
     rows = (
         db.query(AttestationModel)
         .filter(AttestationModel.to_user == username)
         .all()
     )
 
-    reputation = sum(r.value for r in rows)
+    print(">>> RAW ROWS:", rows)
 
-    attestation_list = [AttestationOut.from_orm(r) for r in rows]
+    for r in rows:
+        print(">>> ROW FIELDS:", r.id, r.from_user, r.to_user, r.value, r.context, r.timestamp)
+
+    reputation = sum(r.value for r in rows)
+    print(">>> REPUTATION:", reputation)
+
+    attestation_list = []
+    for r in rows:
+        try:
+            converted = AttestationOut.from_orm(r)
+            attestation_list.append(converted)
+        except Exception as e:
+            print(">>> ERROR converting row:", e)
+            raise e
+
+    print(">>> FINAL RESPONSE READY")
 
     return UserReputation(
         user=username,
