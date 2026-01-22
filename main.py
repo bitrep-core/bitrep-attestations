@@ -6,7 +6,7 @@ from models.attestation import AttestationModel
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="BitRep Attestations - Modular")
+app = FastAPI(title="BitRep Attestations - Modular", debug=True)
 
 app.include_router(attest_router)
 app.include_router(users_router)
