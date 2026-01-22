@@ -13,4 +13,3 @@ class AttestationModel(Base):
     value = Column(Integer)
     context = Column(String)
     timestamp = Column(DateTime, default=datetime.utcnow)
-
