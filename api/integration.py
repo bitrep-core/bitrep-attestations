@@ -59,7 +59,7 @@ def import_third_party_attestation(attestation: ThirdPartyAttestationCreate, db:
         platform_username=attestation.platform_username,
         attestation_type=attestation.attestation_type,
         value=attestation.value,
-        metadata=json.dumps(attestation.metadata),
+        attestation_metadata=json.dumps(attestation.metadata),
         verified=0,  # Pending verification
         weight=0.5  # Platform attestations weighted lower
     )
@@ -164,7 +164,7 @@ def import_github_profile(username: str, github_username: str, db: Session = Dep
         platform_username=github_username,
         attestation_type="commits",
         value=10.0,  # Placeholder value
-        metadata=json.dumps({"note": "Sample GitHub import"}),
+        attestation_metadata=json.dumps({"note": "Sample GitHub import"}),
         verified=0,
         weight=0.5
     )

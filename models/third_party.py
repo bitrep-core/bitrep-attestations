@@ -13,7 +13,7 @@ class ThirdPartyAttestationModel(Base):
     platform_username = Column(String)
     attestation_type = Column(String)  # e.g., "commits", "reviews", "transactions"
     value = Column(Float)
-    metadata = Column(Text)  # JSON metadata about the attestation
+    attestation_metadata = Column(Text)  # JSON metadata about the attestation (renamed from 'metadata')
     verified = Column(Integer, default=0)  # 0 = pending, 1 = verified, -1 = rejected
     weight = Column(Float, default=0.5)  # Platform attestations weighted lower
     timestamp = Column(DateTime, default=datetime.utcnow)
