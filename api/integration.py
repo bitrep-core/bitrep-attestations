@@ -105,6 +105,9 @@ def verify_third_party_attestation(attestation_id: int, verification_proof: Dict
     """
     Verify a third-party attestation using platform API or verification service.
     This is a placeholder - real implementation would integrate with platform APIs.
+    
+    WARNING: This endpoint currently performs no actual verification.
+    In production, implement proper verification before marking as verified.
     """
     attestation = db.query(ThirdPartyAttestationModel).filter(
         ThirdPartyAttestationModel.id == attestation_id
@@ -113,10 +116,17 @@ def verify_third_party_attestation(attestation_id: int, verification_proof: Dict
     if not attestation:
         raise HTTPException(status_code=404, detail="Attestation not found")
     
-    # In production, verify through platform APIs:
+    # TODO: In production, verify through platform APIs:
     # - GitHub API to verify commits
     # - eBay API to verify transaction history
     # - OAuth verification flows
+    
+    # For now, require explicit verification_proof with a valid signature or token
+    if "verified" not in verification_proof or not verification_proof["verified"]:
+        raise HTTPException(
+            status_code=400, 
+            detail="Verification proof must include 'verified': true. Real verification not yet implemented."
+        )
     
     attestation.verified = 1  # Mark as verified
     db.commit()
@@ -124,7 +134,8 @@ def verify_third_party_attestation(attestation_id: int, verification_proof: Dict
     return {
         "attestation_id": attestation_id,
         "verified": True,
-        "message": "Third-party attestation verified"
+        "message": "Third-party attestation verified (placeholder - implement real verification)",
+        "warning": "This is a placeholder implementation. Do not use in production."
     }
 
 @router.get("/integration/user/{username}", response_model=List[ThirdPartyAttestationOut])

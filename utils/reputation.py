@@ -94,6 +94,12 @@ def detect_isolated_clusters(attestations: List[Tuple[str, str, int, float]], th
             edges[from_user] = set()
         edges[from_user].add(to_user)
     
+    # Handle edge cases
+    if len(users) == 0:
+        return {}
+    if len(users) == 1:
+        return {list(users)[0]: 1.0}
+    
     # Calculate connectivity to broader network
     discounts = {}
     for user in users:
@@ -108,7 +114,13 @@ def detect_isolated_clusters(attestations: List[Tuple[str, str, int, float]], th
         extended.discard(user)
         
         # Discount if mostly isolated
-        connectivity = len(extended) / max(len(users) - len(immediate) - 1, 1)
+        # Avoid division by zero
+        total_possible = len(users) - len(immediate) - 1
+        if total_possible <= 0:
+            connectivity = 1.0
+        else:
+            connectivity = len(extended) / total_possible
+        
         discounts[user] = min(1.0, threshold + connectivity)
     
     return discounts

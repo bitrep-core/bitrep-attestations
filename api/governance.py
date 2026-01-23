@@ -47,7 +47,17 @@ class VoteCreate(BaseModel):
 def calculate_quadratic_vote_weight(reputation: float) -> float:
     """
     Calculate vote weight using quadratic scaling to prevent plutocratic capture.
+    
+    Args:
+        reputation: User's reputation score (must be non-negative)
+        
+    Returns:
+        Quadratic vote weight
     """
+    # Ensure reputation is non-negative to avoid complex numbers
+    if reputation < 0:
+        reputation = 0
+    
     return math.sqrt(reputation)
 
 @router.post("/governance/proposal", response_model=ProposalOut)

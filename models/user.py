@@ -25,7 +25,7 @@ class AttestationOut(BaseModel):
 
 class UserReputation(BaseModel):
     user: str
-    reputation: float  # Changed to float for weighted calculations
+    reputation: float  # Weighted reputation score
     attestations: List[AttestationOut]
     
 class UserIdentity(BaseModel):
