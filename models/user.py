@@ -12,7 +12,7 @@ class AttestationOut(BaseModel):
     timestamp: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserReputation(BaseModel):
     user: str
