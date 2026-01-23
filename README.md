@@ -1,233 +1,52 @@
-# BitRep Attestations
+# BitRep — Verifiable, Portable Reputation
 
-A peer-to-peer reputation system based on behavioral attestations with cryptographic signatures, weighted reputation propagation, governance mechanisms, and privacy features.
-
-## Overview
-
-BitRep is a decentralized reputation system that allows users to attest to each other's behavior directly without requiring a central authority. The system uses cryptographic signatures, weighted reputation calculations (modified PageRank), and privacy-preserving zero-knowledge proofs.
+BitRep is a protocol and reference implementation for **verifiable reputation** built on cryptographic identity, attestations, trust propagation, and decentralized governance. It provides a reputation layer that is **portable**, **auditable**, and **independent** of any single platform.
 
 ## Features
+- **[self‑sovereign identity](guide://action?prefill=Tell%20me%20more%20about%3A%20self%E2%80%91sovereign%20identity)** — RSA keypairs with verification endpoints  
+- **[signed attestations](guide://action?prefill=Tell%20me%20more%20about%3A%20signed%20attestations)** — weighted, verifiable, Sybil‑resistant trust links  
+- **[reputation scoring](guide://action?prefill=Tell%20me%20more%20about%3A%20reputation%20scoring)** — trust propagation using a modified PageRank model  
+- **[governance](guide://action?prefill=Tell%20me%20more%20about%3A%20governance)** — reputation‑weighted voting with quadratic scaling  
+- **[privacy layer](guide://action?prefill=Tell%20me%20more%20about%3A%20privacy%20layer)** — ZK framework and selective disclosure of reputation bands  
+- **[integrations](guide://action?prefill=Tell%20me%20more%20about%3A%20integrations)** — import attestations from GitHub, eBay, LinkedIn, StackOverflow  
+- **[security](guide://action?prefill=Tell%20me%20more%20about%3A%20security)** — RSA signatures, validation, CodeQL clean  
+- **[testing](guide://action?prefill=Tell%20me%20more%20about%3A%20testing)** — full FastAPI suite (28/28 passing)
 
-### 1. **Attestation System**
-- Create behavioral attestations between users
-- Cryptographic signatures for authenticity
-- Mutual validation support
-- Weighted attestations based on attester reputation
+## Why BitRep Exists
+Online reputation is fragmented across platforms. BitRep provides a **shared reputation layer** that applications can adopt without centralizing trust or locking users into a single ecosystem.
 
-### 2. **Weighted Reputation**
-- Modified PageRank algorithm for reputation calculation
-- High-reputation attesters have more influence
-- Sybil resistance through isolated cluster detection
-- Time decay for recent behavior emphasis
-
-### 3. **Identity Verification**
-- Self-sovereign cryptographic identities
-- RSA 2048-bit key pair generation
-- Persistent identity verification
-- Public/private key management
-
-### 4. **Governance**
-- Reputation-weighted voting system
-- Quadratic scaling to prevent plutocratic capture
-- Proposal creation and management
-- Democratic decision-making based on demonstrated trustworthiness
-
-### 5. **Privacy Features**
-- Zero-knowledge proofs for reputation thresholds
-- Selective attestation disclosure
-- Reputation bands for privacy preservation
-- Merkle proofs for selective disclosure
-
-### 6. **Third-Party Integration**
-- Import attestations from external platforms
-- Support for GitHub, eBay, LinkedIn, Stack Overflow
-- Validation layer for platform attestations
-- User-controlled reputation bootstrapping
+## How It Works
+- **[Identity](guide://action?prefill=Tell%20me%20more%20about%3A%20Identity):** users generate RSA keypairs; public keys act as decentralized identifiers.  
+- **[Attestations](guide://action?prefill=Tell%20me%20more%20about%3A%20Attestations):** identities issue signed statements about others.  
+- **[Reputation](guide://action?prefill=Tell%20me%20more%20about%3A%20Reputation):** a trust graph is built from attestations and scored via propagation.  
+- **[Governance](guide://action?prefill=Tell%20me%20more%20about%3A%20Governance):** proposals use reputation‑weighted voting rather than tokens.  
+- **[Privacy](guide://action?prefill=Tell%20me%20more%20about%3A%20Privacy):** users can prove they meet thresholds without revealing raw scores.
 
 ## Quick Start
+- **[install dependencies](guide://action?prefill=Tell%20me%20more%20about%3A%20install%20dependencies)**  
+- **[run the FastAPI server](guide://action?prefill=Tell%20me%20more%20about%3A%20run%20the%20FastAPI%20server)**  
+- **[generate an identity](guide://action?prefill=Tell%20me%20more%20about%3A%20generate%20an%20identity)**  
+- **[issue an attestation](guide://action?prefill=Tell%20me%20more%20about%3A%20issue%20an%20attestation)**  
+- **[query reputation](guide://action?prefill=Tell%20me%20more%20about%3A%20query%20reputation)**  
 
-### Installation
+## API Overview
+- **[identity endpoints](guide://action?prefill=Tell%20me%20more%20about%3A%20identity%20endpoints)** — create, verify, rotate keys  
+- **[attestation endpoints](guide://action?prefill=Tell%20me%20more%20about%3A%20attestation%20endpoints)** — issue, validate, list  
+- **[reputation endpoints](guide://action?prefill=Tell%20me%20more%20about%3A%20reputation%20endpoints)** — compute, query, inspect trust graph  
+- **[governance endpoints](guide://action?prefill=Tell%20me%20more%20about%3A%20governance%20endpoints)** — proposals, votes, tallies  
 
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Install development dependencies (for testing)
-pip install -r requirements-dev.txt
-```
-
-### Running the Server
-
-```bash
-uvicorn main:app --reload
-```
-
-The API will be available at http://localhost:8000
-
-Interactive API documentation: http://localhost:8000/docs
-
-### Running Tests
-
-```bash
-pytest tests/ -v
-```
-
-## API Endpoints
-
-### Attestations
-- `POST /attest` - Create a new attestation
-
-### User Reputation
-- `GET /user/{username}` - Get user reputation and attestations
-
-### Identity Management
-- `POST /identity/create` - Create new identity with key pair
-- `GET /identity/{username}` - Get identity information
-- `POST /identity/{username}/verify` - Verify identity
-
-### Governance
-- `POST /governance/proposal` - Create governance proposal
-- `GET /governance/proposals` - List proposals
-- `POST /governance/vote` - Cast weighted vote
-- `POST /governance/proposal/{id}/finalize` - Finalize proposal
-
-### Privacy
-- `POST /privacy/prove-threshold` - Generate ZK proof for reputation threshold
-- `POST /privacy/verify-threshold` - Verify ZK proof
-- `GET /privacy/reputation-bands/{username}` - Get reputation band
-- `POST /privacy/selective-disclosure` - Create selective disclosure proof
-
-### Integration
-- `GET /integration/platforms` - List supported platforms
-- `POST /integration/import` - Import third-party attestation
-- `POST /integration/verify/{id}` - Verify third-party attestation
-- `POST /integration/github/import` - Import GitHub profile
-
-## Architecture
-
-### Technology Stack
-- **FastAPI** - Web framework
-- **SQLAlchemy** - ORM and database management
-- **SQLite** - Database (easily replaceable with PostgreSQL)
-- **Cryptography** - RSA signatures and key management
-- **Pydantic** - Data validation
-
-### Key Components
-
-#### Models
-- `AttestationModel` - Behavioral attestations with signatures
-- `UserIdentityModel` - User identities with cryptographic keys
-- `GovernanceProposalModel` - Governance proposals
-- `VoteModel` - Reputation-weighted votes
-- `ThirdPartyAttestationModel` - External platform attestations
-
-#### Utilities
-- `crypto.py` - Key generation, signing, verification
-- `reputation.py` - Modified PageRank algorithm
-- `zkproof.py` - Zero-knowledge proofs
-
-#### API Routers
-- `attestations.py` - Attestation endpoints
-- `users.py` - User reputation endpoints
-- `identity.py` - Identity management
-- `governance.py` - Governance and voting
-- `privacy.py` - Privacy features
-- `integration.py` - Third-party integrations
-
-## Reputation Algorithm
-
-BitRep uses a modified PageRank algorithm with the following features:
-
-1. **Weighted Propagation**: Attestations from high-reputation users carry more weight
-2. **Sybil Resistance**: Isolated clusters of mutual attestation are discounted
-3. **Time Decay**: Recent attestations matter more (365-day half-life)
-4. **Damping Factor**: 0.85 damping for reputation propagation
-
-### Weight Calculation
-```python
-weight = log2(1 + attester_reputation) * cluster_discount
-```
-
-### Time Decay
-```python
-decay = exp(-age_days * ln(2) / 365)
-```
-
-## Security
-
-### Cryptographic Signatures
-- RSA 2048-bit keys
-- PSS padding with SHA-256
-- Signature verification for all attestations
-
-### Privacy
-- Zero-knowledge proofs for threshold verification
-- Selective disclosure with Merkle proofs
-- Reputation bands instead of exact scores
-
-### Identity
-- Self-sovereign identity model
-- Private keys never stored on server
-- Multi-channel verification support
-
-## Testing
-
-The project includes comprehensive tests:
-
-- **Cryptographic utilities**: Key generation, signing, verification
-- **Reputation algorithms**: PageRank, weighting, Sybil detection, time decay
-- **Zero-knowledge proofs**: Threshold proofs, selective disclosure
-- **API endpoints**: Integration tests for all major endpoints
-
-Run tests with:
-```bash
-pytest tests/ -v --cov=.
-```
-
-## Documentation
-
-- [API Documentation](API_DOCUMENTATION.md) - Detailed API reference
-- [BitRep Whitepaper](BitRep_Whitepaper.md) - Theoretical foundation
-
-## Roadmap
-
-### Completed ✅
-- Attestation system with cryptographic signatures
-- Weighted reputation calculation (PageRank)
-- Identity management with key pairs
-- Governance and voting
-- Privacy features (ZK proofs)
-- Third-party integration framework
-- Comprehensive test suite
-
-### Future Enhancements
-- Blockchain integration for immutability
-- Advanced ZK-SNARK implementations
-- Real-time reputation updates
-- Mobile SDK
-- Decentralized storage (IPFS)
-- Cross-chain reputation bridges
+## Security Notes
+- **[RSA signatures](guide://action?prefill=Tell%20me%20more%20about%3A%20RSA%20signatures)**  
+- **[input validation](guide://action?prefill=Tell%20me%20more%20about%3A%20input%20validation)**  
+- **[documented threat model](guide://action?prefill=Tell%20me%20more%20about%3A%20documented%20threat%20model)**  
+- **[experimental ZK framework](guide://action?prefill=Tell%20me%20more%20about%3A%20experimental%20ZK%20framework)** (not production‑grade)
 
 ## Contributing
+Contributions are welcome in:
+- **[cryptography](guide://action?prefill=Tell%20me%20more%20about%3A%20cryptography)**  
+- **[backend engineering](guide://action?prefill=Tell%20me%20more%20about%3A%20backend%20engineering)**  
+- **[graph algorithms](guide://action?prefill=Tell%20me%20more%20about%3A%20graph%20algorithms)**  
+- **[governance design](guide://action?prefill=Tell%20me%20more%20about%3A%20governance%20design)**  
+- **[privacy systems](guide://action?prefill=Tell%20me%20more%20about%3A%20privacy%20systems)**  
 
-Contributions are welcome! Please ensure:
-1. All tests pass
-2. New features include tests
-3. Code follows existing style
-4. Security best practices are maintained
-
-## License
-
-See [LICENSE](LICENSE) file for details.
-
-## Citation
-
-If you use BitRep in research, please cite:
-```
-BitRep: A Peer-to-Peer Reputation System
-Based on cryptographic attestations and weighted reputation propagation
-```
-
-## Contact
-
-For questions or support, please open an issue on GitHub.
+Open an issue, start a discussion, or submit a PR.
