@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List
 from sqlalchemy.orm import Session
-from models.user import AttestationModel  # adjust if needed
 
 router = APIRouter()
 
